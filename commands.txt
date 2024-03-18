@@ -1,0 +1,48 @@
+docker-compose run --rm  freqtrade download-data --exchange binance -t 5m --timerange 20220101-20230408 --config /user_data/config.json
+
+
+
+docker-compose run --rm  bot1 download-data --exchange binance -t 6h --timerange 20200101-20230408 --pairs-file user_data/data/binance/pairs.json --data-format-ohlcv feather --trading-mode spot
+#
+DOWNLOAD DATA (TIME_FRAME-STATE)
+5m ok
+6h ok
+1d ok
+15m ok
+#
+
+docker-compose run --rm  bot1 backtesting -c config.json --strategy keltnerchannel --exchange binance -t 5m --timerange 20200101-20230101 --export trades --data-format-ohlcv feather --pairs-file user_data/data/binance/pairs.json
+
+freqtrade backtesting -c config.json --strategy Strategy -timerange=20190101- --export trades --data-format-ohlcv feather
+
+docker-compose run --rm  bot1 hyperopt-list
+
+ClucMay72018Hyperopt.py
+
+docker-compose run --rm  bot1 backtesting --datadir user_data/data/binance --stake-amount 100 --strategy keltnerchannel  -i 1d --timerange 20200101-20230101 --export trades --data-format-ohlcv feather --dry-run-wallet 10000 --starting-balance 10000
+
+docker-compose run --rm  bot1 backtesting --datadir user_data/data/binance --stake-amount 100 --strategy NostalgiaForInfinityX  -i 5m --timerange 20200101-20230101 --export trades --data-format-ohlcv feather --dry-run-wallet 10000 --starting-balance 10000
+
+
+docker-compose run --rm  bot1 hyperopt --hyperopt-loss SharpeHyperOptLoss --strategy ClucMay72018 -i 5m --stake-amount 10 --dry-run-wallet 1000 --starting-balance 1000 --datadir user_data/data/binance --timerange 20220101-20230101 --data-format-ohlcv feather --spaces roi stoploss
+
+
+docker-compose run --rm  bot1 hyperopt --hyperopt-loss ProfitDrawDownHyperOptLoss --strategy NostalgiaForInfinityX -i 5m --stake-amount 100 --dry-run-wallet 10000 --starting-balance 10000 --datadir user_data/data/binance --timerange 20220101-20230101 --data-format-ohlcv feather --ignore-missing-spaces --analyze-per-epoch -e 1000
+
+docker-compose run --rm  bot1 hyperopt --hyperopt-loss ProfitDrawDownHyperOptLoss --strategy keltnerchannel -i 1d --stake-amount 100 --dry-run-wallet 10000 --starting-balance 10000 --datadir user_data/data/binance --timerange 20220101-20230101 --data-format-ohlcv feather --ignore-missing-spaces --analyze-per-epoch -e 1000
+
+
+'''
+ShortTradeDurHyperOptLoss - (default legacy Freqtrade hyperoptimization loss function) - Mostly for short trade duration and avoiding losses.
+OnlyProfitHyperOptLoss - takes only amount of profit into consideration.
+SharpeHyperOptLoss - optimizes Sharpe Ratio calculated on trade returns relative to standard deviation.
+SharpeHyperOptLossDaily - optimizes Sharpe Ratio calculated on daily trade returns relative to standard deviation.
+SortinoHyperOptLoss - optimizes Sortino Ratio calculated on trade returns relative to downside standard deviation.
+SortinoHyperOptLossDaily - optimizes Sortino Ratio calculated on daily trade returns relative to downside standard deviation.
+MaxDrawDownHyperOptLoss - Optimizes Maximum drawdown.
+CalmarHyperOptLoss - Optimizes Calmar Ratio calculated on trade returns relative to max drawdown.
+ProfitDrawDownHyperOptLoss - Optimizes by max Profit & min Drawdown objective. DRAWDOWN_MULT variable within the hyperoptloss file can be adjusted to be stricter or more flexible on drawdown purposes.
+'''
+
+error DNS api exchange: 
+https://stackoverflow.com/questions/62968807/dns-resolution-in-docker-containers
